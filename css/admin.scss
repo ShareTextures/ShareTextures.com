@@ -1,0 +1,14 @@
+// These variables are only needed so SCSS doesn't throw an error when importing the core
+$c-accent: rgb(234, 91, 12);
+$c-accent-alt: rgb(190, 111, 255);
+$hide_header_patreon_bar: 1102px;
+$shrink_hack_width: 850px;
+$default_banner_img: url(/files/site_images/landing/1.jpg);
+$display_banner_credit: none;  // Hide if it's only our own work
+
+@import "../core/core";
+@import "../core/admin_core";
+
+#sphere-render-preview-wrapper {
+    text-align: center;
+}

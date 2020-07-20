@@ -1,0 +1,1 @@
+<?php header("Location: new_tex.php"); ?>

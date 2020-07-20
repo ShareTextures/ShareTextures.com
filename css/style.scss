@@ -1,0 +1,423 @@
+$c-accent: rgb(243, 130, 55);
+$c-accent-alt: rgb(190, 111, 255);
+$hide_header_patreon_bar: 1102px;
+$shrink_hack_width: 850px;
+$default_banner_img: url(/files/site_images/landing/1.jpg);
+$display_banner_credit: none;  // Hide if it's only our own work
+
+@import "../core/core";
+
+
+// ============================================================================
+// Item Grid
+// ============================================================================
+
+.grid-item {
+    $grid-item-padding: 1.287em;  // This exact padding means the 350px image isn't resized when viewed on a 1080p screen. #whoneedsfutureproofing
+
+    position: relative;
+    display: inline-block;
+    margin: 0.5em;
+    width: calc(25% - 1em);
+    @include transition(0.2s);
+
+    .thumbnail-wrapper {
+        padding: $grid-item-padding;
+    }
+    .thumbnail {
+        width: 100%;
+    }
+    .thumbnail-proxy {
+        position: absolute;
+        width: calc(100% - (#{$grid-item-padding} * 2));
+        filter: blur(7px);
+        @include transition(0.2s);
+    }
+
+    .description-wrapper {
+        position: absolute;
+        bottom: 0;
+        height: 100%;
+        width: 100%;
+        background: radial-gradient(rgba($c-background, 0.1), transparent);
+        opacity: 0;
+        text-align: center;
+        filter: blur(10px);
+        transform: scaleY(0.05);
+        @include transition(0.2s);
+    }
+    .description {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 100%;
+        color: $c-text-light;
+
+        h3 {
+            color: $c-text-bright;
+            padding-bottom: 0.2em;
+            text-shadow: 1px 1px 1px rgb(0, 0, 0), 1px 1px 3px rgba(0, 0, 0,0.5);
+        }
+        p {
+            text-shadow: 1px 1px 1px rgb(0, 0, 0), 1px 1px 3px rgba(0, 0, 0,0.5);
+            opacity: 0.8;
+            margin: 0;
+            line-height: 1;
+            font-size: 1em;
+        }
+    }
+
+    .problem-icon {
+        position: absolute;
+        top: 0.75em;
+        left: 1.1em;
+        color: #eee;
+        transform: rotate(-45deg);
+        font-weight: $fw-bold;
+        text-shadow: 1px 1px 2px rgba(0,0,0, 0.2);
+        font-size: 1.75em;
+    }
+    .problem-triangle, .problem-triangle-shadow {
+        position: absolute;
+        top: $grid-item-padding;
+        left: $grid-item-padding;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 4em 4em 0 0;
+        border-color: $c-red transparent transparent transparent;
+        @include transition();
+    }
+    .problem-triangle-shadow {
+        border-width: 51px 51px 0 0;
+        border-color: rgba(0,0,0,0.15) transparent transparent transparent;
+    }
+    .problem {
+        position: absolute;
+        top: $grid-item-padding;
+        left: $grid-item-padding;
+        padding: 1.44em 0;
+        width: 0;
+        opacity: 0;
+        background-color: $c-red-light;
+        white-space: nowrap;
+        overflow: hidden;
+        @include transition();
+
+        .problem-text {
+            font-size: $std-font-size;
+            text-align: center;
+            color: #eee;
+        }
+    }
+    .problem-hover {
+        opacity: 1;
+        padding: 1.44em 3em;
+        width: calc(100% - 8em);
+        @include transition();
+    }
+
+    &:hover {
+        .description-wrapper {
+            opacity: 1;
+            filter: none;
+            transform: none;
+            @include transition(0.15s);
+        }
+    }
+}
+
+
+// ============================================================================
+// Item Page
+// ============================================================================
+
+#page-data {
+    // Not displayed, used to pass data to js
+    display: none;
+}
+
+#preview-download {
+    position: relative;
+}
+#item-preview {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: 700px;
+
+    img {
+        padding: 30px;
+        width: calc(100% - 60px);  // image will be exactly 640px
+    }
+
+    #map-preview-img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        margin: 30px;
+        width: calc(100% - 60px);
+        height: calc(100% - 60px);
+        background-size: 100%;
+        background-position: 50% 50%;
+    }
+
+    #map-preview-zoom-btns {
+        position: absolute;
+        bottom: 0;
+        margin: 0.5em;
+        width: calc(100% - 1em);
+        text-align: right;
+        font-family: monospace;
+        user-select: none;
+        -moz-user-select: none;
+
+        .map-preview-zoom {
+            color: $c-text-light;
+            font-size: 3em;
+            padding: 0.1em;
+            line-height: 0.8em;
+            vertical-align: bottom;
+            cursor: pointer;
+            @include text-shadow(1);
+            @include transition();
+
+            &:hover {
+                font-weight: $fw-bold;
+            }
+        }
+
+        #map-preview-resolution {
+            position: relative;
+            display: inline-block;
+            margin-right: 1em;
+            text-align: center;
+
+            &:hover {
+                #map-preview-resolution-select {
+                    background-color: rgba($c-accent, 1);
+                    border-color: rgba($c-accent-light, 1);
+                }
+            }
+        }
+        #map-preview-resolution-select {
+            background-color: rgba($c-accent, 0);
+            border-color: rgba($c-accent-light, 0);
+            padding: 0.5em 0.7em;
+            cursor: pointer;
+            @include text-shadow(1);
+
+            i {
+                margin-left: 0.3em;
+                font-size: 1em;
+                vertical-align: text-bottom;
+            }
+
+            img {
+                padding: 0;
+                width: 75%;
+            }
+        }
+        #map-preview-resolution-list {
+            position: absolute;
+            bottom: 100%;
+            width: calc(100% - 2px);
+            margin: 0;
+            list-style: none;
+            background-color: $c-background;
+            border: 1px solid $c-accent;
+
+            li {
+                margin: 0;
+                padding: 0.5em;
+                cursor: pointer;
+                @include transition(0.2s);
+
+                &:hover {
+                    background-color: $c-accent-lighter;
+                    color: $c-text-light;
+                    @include transition(0.1s);
+                }
+            }
+        }
+    }
+}
+@media all and (max-width: 1024px){
+    #item-preview {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 100%;
+    }
+}
+
+.download-buttons {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: calc(100% - 700px - 2em);
+    padding: 1em;
+    margin-top: -0.85em;
+
+    $c-border: $c-background-light;
+
+    h2 {
+        padding: 0.75em !important;
+    }
+
+    .map-type {
+        display: block;
+        width: 100%;
+        height: 48px;
+        border: 1px solid $c-border;
+        border-bottom: none;
+
+        &:last-of-type {
+            border-bottom: 1px solid $c-border;
+        }
+    }
+    .map-download, .map-preview {
+        @extend .button-dark;
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        height: 48px;
+        padding: 0;
+        vertical-align: top;
+        border: none;
+
+        p {
+            font-size: 1em;
+            margin: 0.75em;
+        }
+
+        sup {
+            display: block;
+            margin-top: 0.2em;
+            font-size: 0.75em;
+            font-weight: $fw-normal;
+        }
+    }
+    .map-preview {
+        width: 48px;
+        cursor: pointer;
+
+        img {
+            width: 28px;
+        }
+    }
+    .map-preview-active {
+        background-color: $c-accent;
+
+        &:hover {
+            background-color: $c-accent;
+        }
+    }
+    .map-download {
+        width: calc(100% - 48px - 1px);
+        border-left: 1px solid $c-border;
+        cursor: pointer;
+
+        &:hover {
+            border-left: 1px solid $c-border;
+        }
+
+        img {
+            width: 28px;
+            margin: -8px 4px -8px -8px;
+        }
+    }
+    .map-download-active {
+        background-color: $c-accent;
+
+        &:hover {
+            background-color: $c-accent;
+        }
+    }
+    .res-menu {
+        position: absolute;
+        z-index: 10;
+        width: calc(100% - 2em - 2px);
+        border: 1px solid $c-accent;
+
+        .res-item {
+            width: 100%;
+            border-bottom: 1px solid $c-border;
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+    }
+
+    .dl-btn {
+        @extend .button-inverse;
+        border: none;
+        border-right: 1px solid $c-accent;
+        font-size: 0.9em;
+        text-align: center;
+        white-space: nowrap;
+        color: $c-text-light;
+        cursor: pointer;
+
+        &:last-child {
+            border-right: none;
+
+            &:hover {
+                box-shadow: 1px 0 0 0 $c-accent;  // hack to get rid of 1px space
+            }
+        }
+
+        &:hover{
+            background-color: $c-accent;
+        }
+    }
+}
+@media all and (max-width: 1024px){
+    .download-buttons {
+        display: block;
+        width: auto;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+#item-info {
+    padding-top: 0.75em;
+
+    #sponsor-list {
+        list-style: none;
+
+        li {
+            font-weight: $fw-extra-bold;
+            padding-bottom: 0.5em;
+
+            &:last-child {
+                padding-bottom: 0;
+            }
+        }
+    }
+}
+
+.item-info-list {
+    list-style: none;
+    text-align: center;
+
+    li {
+        display: inline;
+        padding: 0.5em;
+        margin: 0;
+        font-size: 0.9em;
+        color: rgba($c-text-light, 0.8);
+
+        b {
+            font-weight: $fw-normal;
+            color: $c-text-light;
+        }
+
+        i {
+            vertical-align: top;
+        }
+    }
+}
