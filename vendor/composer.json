@@ -1,0 +1,5 @@
+{
+    "require": {
+        "delight-im/db": "^1.3"
+    }
+}
